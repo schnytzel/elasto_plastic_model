@@ -43,9 +43,13 @@ def stressPt( data , step , cross ):
             if data[i,1] > 1e-4 :
                 aq = aq + [[ data[i,0] , data[i,1] ]]
         i += 1
-    return aq
+    return np.array(aq)
 
 tab = np.loadtxt('4.dat' , skiprows=10)
 band = [0.0002 , 0.0005]
 crossSec = np.pi * 7.82**2 / 4 
 Young , coeffB = findLin( tab , band , crossSec )
+strainPlasticList = findPlastStrain( tab , Young , coeffB , crossSec )
+step = 10
+plasticTable = stressPt( strainPlasticList , step , crossSec )
+np.savetxt( 'plasticTable.txt' , plasticTable )
